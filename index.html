@@ -1,0 +1,1104 @@
+<!-- ========================================
+  ضع مفتاح Claude هنا في السطر التالي فقط:
+  احذف الكلمات العربية وضع مفتاحك بدلها
+  مثال: var MY_KEY = 'sk-ant-api03-XXXXX';
+======================================== -->
+<script>
+  var MY_KEY = 'ضع_مفتاحك_هنا';
+</script>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مُلخِّص ٤.٠</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+<!-- ══════════════════════════════════════════
+     Firebase SDK — Google Login
+     استبدل الإعدادات بتاعتك من Firebase Console
+     ══════════════════════════════════════════ -->
+<script type="module">
+  import { initializeApp }
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged }
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+  /* ✅ Firebase Config — مربوط بمشروع sallsabile */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyDifhWQYkociUHTaMYTz3_0zxoe-oacmMc",
+    authDomain:        "sallsabile-91c23.firebaseapp.com",
+    projectId:         "sallsabile-91c23",
+    storageBucket:     "sallsabile-91c23.firebasestorage.app",
+    messagingSenderId: "571571643519",
+    appId:             "1:571571643519:web:7529abe4739e38e8db0b4a",
+    measurementId:     "G-9C9N0X0PG6"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const gp   = new GoogleAuthProvider();
+  gp.setCustomParameters({ prompt: 'select_account' });
+
+  // ── تتبع حالة الدخول ──
+  onAuthStateChanged(auth, user => {
+    if (user) showApp(user);
+    else      showLogin();
+  });
+
+  window._fbLogin  = () => signInWithPopup(auth, gp);
+  window._fbLogout = () => signOut(auth);
+</script>
+
+<style>
+/* ══════════════════════════════════════════
+   DESIGN SYSTEM — أسود وذهبي
+══════════════════════════════════════════ */
+:root {
+  --gold:        #C9A84C;
+  --gold-lt:     #E8C97A;
+  --gold-dk:     #8B6914;
+  --gold-glow:   rgba(201,168,76,.22);
+  --gold-dim:    rgba(201,168,76,.08);
+  --bg:          #080705;
+  --surf:        #100E09;
+  --surf2:       #181309;
+  --border:      rgba(201,168,76,.22);
+  --border-dim:  rgba(201,168,76,.09);
+  --text:        #F0E6CC;
+  --muted:       #9A8660;
+  --dim:         #4A3E28;
+  --red:         #D64545;
+  --green:       #4CAF7D;
+  --tab-h:       68px;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg); color:var(--text); overflow:hidden; }
+
+/* ── خلفية ── */
+.bg-layer {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% -5%, rgba(201,168,76,.09) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 5% 95%, rgba(201,168,76,.05) 0%, transparent 55%);
+}
+.bg-grid {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(201,168,76,.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,.026) 1px, transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(ellipse 100% 80% at 50% 0%, black 20%, transparent 90%);
+}
+.bg-calli {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+.bg-calli svg { width:115%; height:115%; opacity:.09; }
+
+/* ══════════════════════════════════════════
+   شاشة تسجيل الدخول
+══════════════════════════════════════════ */
+#loginScreen {
+  position:fixed; inset:0; z-index:500;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(8,7,5,.97); backdrop-filter:blur(20px);
+}
+
+.login-wrap {
+  display:flex; flex-direction:column; align-items:center;
+  gap:0; width:90%; max-width:420px;
+  animation:cardIn .55s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes cardIn { from{opacity:0;transform:translateY(30px) scale(.95)} to{opacity:1;transform:none} }
+
+/* النجمة الزخرفية فوق الكارد */
+.login-ornament {
+  font-family:'Amiri',serif; font-size:22px; color:var(--gold-dk);
+  letter-spacing:12px; margin-bottom:18px; opacity:.7;
+}
+
+.login-card {
+  width:100%; background:var(--surf);
+  border:1px solid var(--border); border-radius:24px;
+  padding:40px 32px 36px; text-align:center;
+  box-shadow:0 40px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(201,168,76,.04);
+  position:relative; overflow:hidden;
+}
+
+/* خط ذهبي علوي */
+.login-card::before {
+  content:''; position:absolute; top:0; left:10%; right:10%; height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+
+.login-logo {
+  width:76px; height:76px; margin:0 auto 20px;
+  background:linear-gradient(135deg,var(--gold-dk),var(--gold-lt));
+  border-radius:22px; display:flex; align-items:center; justify-content:center;
+  font-family:'Amiri',serif; font-size:42px; font-weight:700; color:var(--bg);
+  box-shadow:0 8px 32px var(--gold-glow), 0 0 0 1px rgba(201,168,76,.3);
+  animation:float 4s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+.login-title {
+  font-family:'Amiri',serif; font-size:36px; font-weight:700;
+  color:var(--gold); letter-spacing:.5px; margin-bottom:4px;
+}
+.login-sub {
+  font-size:11px; color:var(--dim); letter-spacing:3px;
+  text-transform:uppercase; margin-bottom:6px;
+}
+.login-desc {
+  font-size:13px; color:var(--muted); line-height:1.9;
+  margin-bottom:30px; font-weight:300;
+}
+
+/* Divider */
+.login-div {
+  display:flex; align-items:center; gap:10px; margin-bottom:18px;
+}
+.login-div::before,.login-div::after {
+  content:''; flex:1; height:1px; background:var(--border-dim);
+}
+.login-div span { font-size:11px; color:var(--dim); letter-spacing:1px; white-space:nowrap; }
+
+/* زر Google */
+#loginBtn {
+  width:100%; padding:14px 20px;
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  background:#fff; border:none; border-radius:14px;
+  font-family:'Tajawal',sans-serif; font-size:16px; font-weight:700; color:#111;
+  cursor:pointer; transition:all .3s;
+  box-shadow:0 4px 20px rgba(255,255,255,.1);
+}
+#loginBtn:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(255,255,255,.18); }
+#loginBtn:disabled { opacity:.55; cursor:not-allowed; transform:none; }
+#loginBtn svg { width:22px; height:22px; flex-shrink:0; }
+
+.login-note {
+  font-size:11px; color:var(--dim); margin-top:22px; line-height:1.9;
+}
+.login-note b { color:var(--gold-dk); }
+
+/* بطاقات الميزات تحت الكارد */
+.login-features {
+  display:grid; grid-template-columns:1fr 1fr 1fr;
+  gap:8px; margin-top:14px; width:100%;
+}
+.feat-card {
+  background:var(--surf); border:1px solid var(--border-dim);
+  border-radius:12px; padding:12px 8px; text-align:center;
+}
+.feat-icon { font-size:20px; margin-bottom:5px; }
+.feat-text { font-size:10px; color:var(--muted); line-height:1.5; }
+
+/* ══════════════════════════════════════════
+   التطبيق الرئيسي
+══════════════════════════════════════════ */
+.app {
+  position:relative; z-index:1;
+  display:flex; flex-direction:column;
+  height:100vh; height:100dvh;
+  max-width:880px; margin:0 auto;
+}
+
+/* ── الشريط العلوي ── */
+.topbar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:11px 20px 9px;
+  border-bottom:1px solid var(--border-dim);
+  background:rgba(8,7,5,.9); backdrop-filter:blur(16px);
+  flex-shrink:0;
+}
+.tl { display:flex; align-items:center; gap:10px; }
+.logo-mark {
+  width:36px; height:36px;
+  background:linear-gradient(135deg,var(--gold-dk),var(--gold-lt));
+  border-radius:10px; display:flex; align-items:center; justify-content:center;
+  font-family:'Amiri',serif; font-size:19px; font-weight:700; color:var(--bg);
+  box-shadow:0 4px 14px var(--gold-glow);
+}
+.logo-name { font-family:'Amiri',serif; font-size:20px; font-weight:700; color:var(--gold); }
+
+.user-pill {
+  display:flex; align-items:center; gap:7px;
+  background:var(--gold-dim); border:1px solid var(--border-dim);
+  border-radius:20px; padding:4px 6px 4px 12px;
+  cursor:default;
+}
+.uavatar { width:26px; height:26px; border-radius:50%; border:1px solid var(--border); }
+.uname { font-size:12px; color:var(--muted); max-width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.logout-x {
+  background:none; border:none; cursor:pointer; font-size:14px; color:var(--dim);
+  padding:2px 6px; border-radius:6px; font-family:'Tajawal',sans-serif;
+  transition:color .2s;
+}
+.logout-x:hover { color:var(--red); }
+
+/* ── المحتوى ── */
+.content {
+  flex:1; overflow-y:auto; overflow-x:hidden;
+  padding:20px 18px calc(var(--tab-h) + 14px);
+  scroll-behavior:smooth;
+}
+.content::-webkit-scrollbar { width:3px; }
+.content::-webkit-scrollbar-thumb { background:var(--border-dim); border-radius:2px; }
+
+/* ── الصفحات ── */
+.page { display:none; animation:up .35s ease both; }
+.page.active { display:block; }
+@keyframes up { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+
+/* ── التاب السفلي ── */
+.tabs {
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+  width:100%; max-width:880px; height:var(--tab-h);
+  background:rgba(8,7,5,.97); backdrop-filter:blur(20px);
+  border-top:1px solid var(--border-dim);
+  display:flex; z-index:200; padding:0 6px;
+}
+.tab {
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:4px; cursor:pointer; transition:all .22s;
+  border-radius:12px; margin:6px 3px; border:1px solid transparent; position:relative;
+}
+.tab:hover { background:rgba(201,168,76,.05); }
+.tab.active { background:rgba(201,168,76,.1); border-color:var(--border); }
+.tab.active::before {
+  content:''; position:absolute; top:-1px; left:22%; right:22%; height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.tab-i { font-size:18px; transition:transform .22s; }
+.tab.active .tab-i { transform:scale(1.15); }
+.tab-l { font-size:10px; font-weight:700; color:var(--dim); transition:color .22s; letter-spacing:.5px; }
+.tab.active .tab-l { color:var(--gold); }
+
+/* ── رأس القسم ── */
+.sec-head { margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid var(--border-dim); }
+.sec-title { font-family:'Amiri',serif; font-size:clamp(22px,4vw,32px); font-weight:700; line-height:1.2; }
+.sec-title em { color:var(--gold); font-style:normal; }
+.sec-sub { font-size:13px; color:var(--muted); margin-top:4px; font-weight:300; }
+
+/* ── خيارات ── */
+.opts { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin-bottom:16px; }
+@media(max-width:580px) { .opts { grid-template-columns:1fr 1fr; } }
+.opt-box { display:flex; flex-direction:column; gap:4px; }
+.opt-lbl { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--dim); }
+.opt-sel {
+  padding:8px 9px; background:var(--surf); border:1px solid var(--border-dim);
+  border-radius:9px; font-family:'Tajawal',sans-serif; font-size:12px;
+  color:var(--text); outline:none; cursor:pointer; direction:rtl; transition:border-color .25s;
+  appearance:none;
+}
+.opt-sel:focus { border-color:var(--gold); }
+
+/* ── معلومة الأسلوب ── */
+.lit-info {
+  display:none; background:rgba(201,168,76,.07); border:1px solid var(--border);
+  border-radius:10px; padding:10px 14px; margin-bottom:14px;
+  font-size:12px; color:var(--muted); line-height:1.7;
+}
+.lit-info.show { display:block; }
+.lit-info strong { color:var(--gold); }
+
+/* ── شبكة المحرر ── */
+.editor-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+@media(max-width:560px) { .editor-grid { grid-template-columns:1fr; } }
+
+.panel {
+  background:var(--surf); border:1px solid var(--border-dim);
+  border-radius:14px; padding:14px; display:flex; flex-direction:column;
+  gap:9px; transition:border-color .25s; min-height:200px;
+}
+.panel:focus-within { border-color:rgba(201,168,76,.35); }
+.ph {
+  display:flex; align-items:center; gap:7px;
+  font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--dim);
+}
+.ph::before {
+  content:''; width:5px; height:5px; border-radius:50%;
+  background:var(--gold); box-shadow:0 0 5px var(--gold-glow); flex-shrink:0;
+}
+.ta {
+  flex:1; background:transparent; border:none; outline:none;
+  font-family:'Amiri',serif; font-size:17px; line-height:2;
+  color:var(--text); resize:none; direction:rtl; min-height:120px;
+}
+.ta::placeholder { color:var(--dim); font-style:italic; }
+.pf {
+  display:flex; justify-content:space-between; align-items:center;
+  padding-top:8px; border-top:1px solid var(--border-dim);
+  font-size:11px; color:var(--dim);
+}
+.ghost { background:none; border:none; cursor:pointer; font-family:'Tajawal',sans-serif; font-size:11px; color:var(--dim); transition:color .2s; }
+.ghost:hover { color:var(--red); }
+
+/* ── مؤشر التحميل ── */
+.prog { height:2px; background:var(--border-dim); border-radius:2px; overflow:hidden; display:none; }
+.prog.on { display:block; }
+.prog-bar {
+  height:100%; background:linear-gradient(90deg,var(--gold-dk),var(--gold-lt),var(--gold-dk));
+  background-size:200% 100%; animation:shimmer 1.4s linear infinite;
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+/* ── الناتج الفارغ ── */
+.out-idle {
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; color:var(--dim); text-align:center; padding:14px;
+}
+.out-idle-icon { font-size:36px; opacity:.18; }
+.out-idle-txt { font-size:12px; line-height:1.8; }
+
+/* ── نص الناتج ── */
+.out-txt {
+  flex:1; font-family:'Amiri',serif; font-size:17px; line-height:2;
+  color:var(--text); direction:rtl; animation:up .4s ease;
+}
+
+/* ── الإحصائيات ── */
+.stats { display:flex; background:var(--surf2); border-radius:10px; overflow:hidden; }
+.stats.hide { display:none; }
+.stat { flex:1; padding:9px 6px; display:flex; flex-direction:column; align-items:center; border-left:1px solid var(--border-dim); }
+.stat:last-child { border:none; }
+.stat-n { font-size:18px; font-weight:900; color:var(--gold-lt); }
+.stat-l { font-size:9px; color:var(--dim); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+
+/* ── شريط الأفعال ── */
+.acts { display:none; gap:7px; flex-wrap:wrap; margin-top:11px; }
+.acts.show { display:flex; }
+.act {
+  padding:6px 13px; background:var(--surf2); border:1px solid var(--border-dim);
+  border-radius:8px; font-family:'Tajawal',sans-serif; font-size:12px;
+  font-weight:600; color:var(--muted); cursor:pointer; transition:all .2s;
+}
+.act:hover { border-color:var(--gold); color:var(--gold); }
+
+/* ── خطأ ── */
+.err {
+  display:none; background:rgba(214,69,69,.08); border:1px solid rgba(214,69,69,.2);
+  border-radius:10px; padding:10px 14px; font-size:13px;
+  color:var(--red); margin-bottom:14px; line-height:1.6;
+}
+.err.on { display:block; }
+
+/* ── الزر الرئيسي ── */
+.btn-main {
+  width:100%; padding:15px;
+  background:linear-gradient(135deg,var(--gold-dk) 0%,var(--gold) 50%,var(--gold-dk) 100%);
+  background-size:200% 100%; border:none; border-radius:13px;
+  font-family:'Tajawal',sans-serif; font-size:16px; font-weight:700;
+  color:var(--bg); cursor:pointer; letter-spacing:.5px;
+  transition:all .3s; box-shadow:0 4px 22px var(--gold-glow);
+  margin-top:14px;
+}
+.btn-main:hover { background-position:100% 0; transform:translateY(-2px); box-shadow:0 8px 30px var(--gold-glow); }
+.btn-main:disabled { opacity:.45; cursor:not-allowed; transform:none; }
+
+/* ══════════════════════════════════════════
+   صفحة المحفوظات
+══════════════════════════════════════════ */
+.sv-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+.sv-badge { padding:4px 12px; background:var(--surf); border:1px solid var(--border-dim); border-radius:18px; font-size:12px; color:var(--muted); }
+.sv-del { padding:6px 12px; background:rgba(214,69,69,.06); border:1px solid rgba(214,69,69,.15); border-radius:9px; font-family:'Tajawal',sans-serif; font-size:12px; color:var(--red); cursor:pointer; transition:background .2s; }
+.sv-del:hover { background:rgba(214,69,69,.12); }
+
+.sv-list { display:flex; flex-direction:column; gap:12px; }
+.sv-card {
+  background:var(--surf); border:1px solid var(--border-dim);
+  border-radius:13px; padding:15px 17px; position:relative; overflow:hidden; transition:border-color .2s;
+}
+.sv-card::before { content:''; position:absolute; right:0; top:0; bottom:0; width:3px; background:linear-gradient(var(--gold-dk),var(--gold-lt)); }
+.sv-card:hover { border-color:var(--border); }
+.sv-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:9px; }
+.sv-mode { font-size:11px; color:var(--gold); background:var(--gold-dim); border:1px solid var(--border); padding:2px 9px; border-radius:7px; }
+.sv-date { font-size:11px; color:var(--dim); background:var(--surf2); padding:2px 8px; border-radius:7px; }
+.sv-txt { font-family:'Amiri',serif; font-size:15px; line-height:1.9; color:var(--text); direction:rtl; margin-bottom:9px; }
+.sv-acts { display:flex; gap:6px; margin-top:8px; }
+.empty { text-align:center; padding:60px 20px; color:var(--dim); }
+.empty-icon { font-size:48px; opacity:.18; margin-bottom:12px; }
+.empty p { font-size:13px; line-height:1.9; }
+
+/* ══════════════════════════════════════════
+   إعدادات وخطة التعلم
+══════════════════════════════════════════ */
+.info-box {
+  background:var(--gold-dim); border:1px solid var(--border);
+  border-radius:14px; padding:16px; margin-bottom:14px;
+}
+.info-box-title { font-size:13px; font-weight:700; color:var(--gold); margin-bottom:10px; display:flex; align-items:center; gap:7px; }
+.info-box-body { font-size:12px; color:var(--muted); line-height:2.1; }
+.info-box-body b { color:var(--text); }
+
+/* خطة الأسبوع */
+.week-plan { display:flex; flex-direction:column; gap:9px; margin-bottom:16px; }
+.week-card {
+  display:flex; align-items:flex-start; gap:14px;
+  background:var(--surf); border:1px solid var(--border-dim);
+  border-radius:12px; padding:14px 16px;
+}
+.week-num {
+  width:32px; height:32px; border-radius:8px; flex-shrink:0;
+  background:var(--gold-dim); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:900; color:var(--gold);
+}
+.week-num.done { background:rgba(76,175,125,.1); border-color:rgba(76,175,125,.3); color:var(--green); }
+.week-now { background:var(--gold-glow); border-color:var(--gold); color:var(--bg); }
+.week-info { flex:1; }
+.week-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.week-desc { font-size:12px; color:var(--muted); line-height:1.7; }
+
+/* ── توست ── */
+.toast {
+  position:fixed; bottom:calc(var(--tab-h) + 14px); left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--surf2); border:1px solid var(--border);
+  color:var(--gold); padding:8px 20px; border-radius:30px;
+  font-size:13px; z-index:999; opacity:0; transition:all .35s;
+  pointer-events:none; white-space:nowrap;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-thumb { background:var(--border-dim); border-radius:2px; }
+@media(max-width:480px) { .content { padding:14px 13px calc(var(--tab-h) + 10px); } }
+</style>
+</head>
+<body>
+
+<!-- الخلفية -->
+<div class="bg-layer"></div>
+<div class="bg-grid"></div>
+<div class="bg-calli">
+  <svg viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1000" height="700" fill="#C9A84C"/>
+    <g transform="translate(500,350)" fill="none" stroke="#0A0800">
+      <circle r="275" stroke-width="1.1" opacity=".45"/>
+      <circle r="310" stroke-width=".5"  opacity=".25"/>
+      <line x1="0" y1="-320" x2="0" y2="320" stroke-width=".55" opacity=".2"/>
+      <line x1="-320" y1="0" x2="320" y2="0" stroke-width=".55" opacity=".2"/>
+      <line x1="-226" y1="-226" x2="226" y2="226" stroke-width=".55" opacity=".2"/>
+      <line x1="226" y1="-226" x2="-226" y2="226" stroke-width=".55" opacity=".2"/>
+      <polygon points="0,-250 36,-97 193,-193 97,-36 250,0 97,36 193,193 36,97 0,250 -36,97 -193,193 -97,36 -250,0 -97,-36 -193,-193 -36,-97"
+        stroke-width="1.1" opacity=".38"/>
+    </g>
+    <text x="500" y="190" text-anchor="middle" font-family="'Amiri',serif" font-size="68" font-weight="700" fill="#0A0800" letter-spacing="3">بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيم</text>
+    <text x="500" y="295" text-anchor="middle" font-family="'Amiri',serif" font-size="45" fill="#0A0800" letter-spacing="2">وَفَوْقَ كُلِّ ذِي عِلْمٍ عَلِيم</text>
+    <text x="500" y="390" text-anchor="middle" font-family="'Amiri',serif" font-size="41" fill="#0A0800" letter-spacing="2">اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَق</text>
+    <text x="500" y="475" text-anchor="middle" font-family="'Amiri',serif" font-size="34" fill="#0A0800" opacity=".75" letter-spacing="3">✦ المدرسة الرقمية العربية ✦</text>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════
+     شاشة تسجيل الدخول
+══════════════════════════════════════════ -->
+<div id="loginScreen">
+  <div class="login-wrap">
+    <div class="login-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+    <div class="login-card">
+      <div class="login-logo">م</div>
+      <div class="login-title">مُلخِّص</div>
+      <div class="login-sub">المدرسة الرقمية العربية — النسخة ٤.٠</div>
+      <div class="login-desc">
+        ذكاء اصطناعي يُلخّص النصوص العربية<br>
+        بأسلوب المتنبي، الجاحظ، وأكثر
+      </div>
+
+      <div class="login-div"><span>ادخل مجاناً بـ</span></div>
+
+      <button id="loginBtn" onclick="handleLogin()">
+        <svg viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        دخول بـ Google
+      </button>
+
+      <!-- زر تجريبي بدون login -->
+      <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
+        <div style="flex:1;height:1px;background:var(--border-dim)"></div>
+        <span style="font-size:11px;color:var(--dim)">أو</span>
+        <div style="flex:1;height:1px;background:var(--border-dim)"></div>
+      </div>
+      <button id="guestBtn" onclick="enterAsGuest()" style="
+        width:100%; margin-top:12px; padding:12px 20px;
+        display:flex; align-items:center; justify-content:center; gap:10px;
+        background:transparent; border:1px solid var(--border);
+        border-radius:14px; font-family:'Tajawal',sans-serif;
+        font-size:15px; font-weight:600; color:var(--muted);
+        cursor:pointer; transition:all .3s;
+      " onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+         onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+        👤 &nbsp; تجريب بدون تسجيل
+      </button>
+
+      <div class="login-note">
+        <b>🔒 آمن تماماً</b> — لا نحفظ بياناتك<br>
+        ملخصاتك تبقى على جهازك فقط
+      </div>
+    </div>
+
+    <div class="login-features">
+      <div class="feat-card">
+        <div class="feat-icon">⚔️</div>
+        <div class="feat-text">أسلوب المتنبي والجاحظ</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🎓</div>
+        <div class="feat-text">مساعد الطالب الذكي</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">💾</div>
+        <div class="feat-text">حفظ ملخصاتك</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     التطبيق الرئيسي
+══════════════════════════════════════════ -->
+<div class="app" id="mainApp" style="display:none">
+
+  <div class="topbar">
+    <div class="tl">
+      <div class="logo-mark">م</div>
+      <span class="logo-name">مُلخِّص</span>
+    </div>
+    <div class="user-pill">
+      <span class="uname" id="uname">...</span>
+      <img class="uavatar" id="uavatar" src="" alt="">
+      <button class="logout-x" onclick="handleLogout()" title="خروج">✕</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══ صفحة التلخيص ═══ -->
+    <div class="page active" id="page-sum">
+      <div class="sec-head">
+        <div class="sec-title">لخّص <em>بذكاء</em></div>
+        <div class="sec-sub">أدخل نصّك واختر الأسلوب — الذكاء الاصطناعي يُلخّص فوراً</div>
+      </div>
+
+      <div class="opts">
+        <div class="opt-box">
+          <div class="opt-lbl">الأسلوب</div>
+          <select class="opt-sel" id="styleOpt" onchange="onStyle()">
+            <option value="standard">✦ عادي فصيح</option>
+            <option value="mutanabbi">⚔️ المتنبي</option>
+            <option value="jahiz">📜 الجاحظ</option>
+            <option value="bullets">◉ نقاط رئيسية</option>
+            <option value="simple">🌱 مبسّط للطفل</option>
+          </select>
+        </div>
+        <div class="opt-box">
+          <div class="opt-lbl">الطول</div>
+          <select class="opt-sel" id="lenOpt">
+            <option value="short">قصير</option>
+            <option value="medium" selected>متوسط</option>
+            <option value="long">مفصّل</option>
+          </select>
+        </div>
+        <div class="opt-box">
+          <div class="opt-lbl">اللهجة</div>
+          <select class="opt-sel" id="dialectOpt">
+            <option value="formal">فصحى</option>
+            <option value="easy">سهلة</option>
+            <option value="academic">أكاديمية</option>
+          </select>
+        </div>
+        <div class="opt-box">
+          <div class="opt-lbl">الحفظ</div>
+          <select class="opt-sel" id="saveOpt">
+            <option value="no">يدوي</option>
+            <option value="yes">تلقائي</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="lit-info" id="litInfo"></div>
+      <div class="err" id="errBox"></div>
+
+      <div class="editor-grid">
+        <!-- مدخل النص -->
+        <div class="panel">
+          <div class="ph">النص الأصلي</div>
+          <textarea class="ta" id="inputTa"
+            placeholder="الصق نصّك هنا…&#10;مقال، كتاب، درس، خطاب…"
+            oninput="onInput()"></textarea>
+          <div class="pf">
+            <span id="inCount">٠ حرف</span>
+            <button class="ghost" onclick="clearIn()">مسح ✕</button>
+          </div>
+        </div>
+
+        <!-- الناتج -->
+        <div class="panel">
+          <div class="ph">الملخص</div>
+          <div class="prog" id="prog"><div class="prog-bar"></div></div>
+          <div class="out-idle" id="outIdle">
+            <div class="out-idle-icon">✦</div>
+            <div class="out-idle-txt">اضغط «لخّص» لتبدأ<br>الذكاء الاصطناعي جاهز</div>
+          </div>
+          <div class="out-txt" id="outTxt" style="display:none"></div>
+          <div class="pf" id="outFooter" style="display:none">
+            <span id="outCount">٠ كلمة</span>
+            <button class="ghost" onclick="copyOut()">نسخ ⧉</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats hide" id="statsBar">
+        <div class="stat"><div class="stat-n" id="s1">٠</div><div class="stat-l">أصل</div></div>
+        <div class="stat"><div class="stat-n" id="s2">٠</div><div class="stat-l">ملخص</div></div>
+        <div class="stat"><div class="stat-n" id="s3">٠%</div><div class="stat-l">اختصار</div></div>
+        <div class="stat"><div class="stat-n" id="s4">٠ث</div><div class="stat-l">وقت</div></div>
+      </div>
+
+      <div class="acts" id="actStrip">
+        <button class="act" onclick="doSave()">💾 حفظ</button>
+        <button class="act" onclick="copyOut()">⧉ نسخ</button>
+        <button class="act" onclick="doShare()">↗ مشاركة</button>
+        <button class="act" onclick="doSummarize()">↺ أعد</button>
+      </div>
+
+      <button class="btn-main" id="mainBtn" onclick="doSummarize()">✦ &nbsp; لخّص الآن</button>
+    </div>
+
+    <!-- ═══ صفحة المحفوظات ═══ -->
+    <div class="page" id="page-saved">
+      <div class="sv-top">
+        <div>
+          <div class="sec-title" style="font-size:22px">المحفوظات <em>✦</em></div>
+          <div class="sec-sub" style="margin-top:3px">ملخصاتك المحفوظة محلياً</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="sv-badge" id="svCount">٠ ملخص</span>
+          <button class="sv-del" onclick="clearAll()">حذف الكل</button>
+        </div>
+      </div>
+      <div class="sv-list" id="svList"></div>
+    </div>
+
+    <!-- ═══ صفحة التعلم والإعدادات ═══ -->
+    <div class="page" id="page-set">
+      <div class="sec-head">
+        <div class="sec-title">خطة <em>التعلم</em></div>
+        <div class="sec-sub">طريقك من مبتدئ إلى موقع احترافي في شهر</div>
+      </div>
+
+      <!-- خطة الأسابيع -->
+      <div class="week-plan">
+        <div class="week-card">
+          <div class="week-num week-now">١</div>
+          <div class="week-info">
+            <div class="week-title">الأسبوع الأول — أنت هنا الآن ✦</div>
+            <div class="week-desc">أنشئ حساب Firebase واحصل على Google Login<br>
+            اذهب لـ <b style="color:var(--gold)">firebase.google.com</b> ← New Project ← Authentication ← Google</div>
+          </div>
+        </div>
+        <div class="week-card">
+          <div class="week-num">٢</div>
+          <div class="week-info">
+            <div class="week-title">الأسبوع الثاني — إخفاء المفتاح</div>
+            <div class="week-desc">أنشئ حساب على <b style="color:var(--gold)">console.anthropic.com</b><br>
+            احصل على Claude API Key وضعه في إعدادات Firebase الآمنة</div>
+          </div>
+        </div>
+        <div class="week-card">
+          <div class="week-num">٣</div>
+          <div class="week-info">
+            <div class="week-title">الأسبوع الثالث — النشر للعالم</div>
+            <div class="week-desc">ارفع الملف لـ <b style="color:var(--gold)">github.com</b> ← اربطه بـ <b style="color:var(--gold)">vercel.com</b><br>
+            موقعك يعمل بعنوان حقيقي مثل <i>mulakhis.vercel.app</i></div>
+          </div>
+        </div>
+        <div class="week-card">
+          <div class="week-num">٤</div>
+          <div class="week-info">
+            <div class="week-title">الأسبوع الرابع — المدرسة الرقمية</div>
+            <div class="week-desc">نضيف صفحة الطالب، شرح الدروس، توليد الأسئلة<br>
+            تبدأ تفكر في الاشتراكات المدفوعة 🎯</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- حالة الأمان -->
+      <div class="info-box">
+        <div class="info-box-title">🔒 حالة الأمان الآن</div>
+        <div class="info-box-body">
+          ✅ Google Login — جاهز (يحتاج Firebase Config)<br>
+          ⏳ API Key مخفي — ينتظر إعداد Anthropic Console<br>
+          ✅ المحفوظات — تعمل محلياً على جهازك<br>
+          ⏳ النشر — ينتظر GitHub + Vercel
+        </div>
+      </div>
+
+      <!-- الروابط المهمة -->
+      <div class="info-box">
+        <div class="info-box-title">🔗 الروابط المهمة</div>
+        <div class="info-box-body">
+          <b>Firebase:</b> firebase.google.com<br>
+          <b>Anthropic API:</b> console.anthropic.com<br>
+          <b>GitHub:</b> github.com<br>
+          <b>Vercel:</b> vercel.com<br>
+          <b>كلها مجانية تماماً ✦</b>
+        </div>
+      </div>
+
+      <!-- معلومات المستخدم -->
+      <div style="background:var(--surf);border:1px solid var(--border-dim);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:14px">
+        <img id="profilePic" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--border)" src="" alt="">
+        <div>
+          <div id="profileName" style="font-size:14px;font-weight:700;color:var(--text)"></div>
+          <div id="profileEmail" style="font-size:12px;color:var(--muted);margin-top:3px"></div>
+        </div>
+      </div>
+
+      <button class="btn-main" onclick="handleLogout()" style="background:linear-gradient(135deg,#5a1a1a,var(--red));box-shadow:0 4px 22px rgba(214,69,69,.2)">
+        🚪 &nbsp; تسجيل الخروج
+      </button>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- التابات السفلية -->
+  <div class="tabs">
+    <div class="tab active" onclick="goPage('sum',this)">
+      <div class="tab-i">✦</div><div class="tab-l">تلخيص</div>
+    </div>
+    <div class="tab" onclick="goPage('saved',this)">
+      <div class="tab-i">💾</div><div class="tab-l">المحفوظات</div>
+    </div>
+    <div class="tab" onclick="goPage('set',this)">
+      <div class="tab-i">🗺️</div><div class="tab-l">خطة التعلم</div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════════
+     JavaScript — منطق التطبيق
+══════════════════════════════════════════ -->
+<script>
+/* ════════════════════════════════════════
+   ★ إعدادات Claude API ★
+   هذا المفتاح مؤقت للمرحلة التجريبية
+   في المرحلة التالية سيُنقل للـ Backend
+   ════════════════════════════════════════ */
+const CLAUDE = {
+  // احصل على مفتاحك من: console.anthropic.com
+  key:   window.MY_KEY || 'empty',
+  model: 'claude-sonnet-4-20250514',
+  url:   'https://api.anthropic.com/v1/messages'
+};
+
+/* ════ الحالة ════ */
+const S = {
+  result: '', input: '', mode: '',
+  user: null
+};
+
+/* ════ Auth ════ */
+async function handleLogin() {
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ جاري الدخول…';
+
+  // تحقق إذا كانت Firebase مفعّلة
+  if (!window._fbLogin) {
+    btn.disabled = false;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" width="22" height="22"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> دخول بـ Google`;
+    toast('⚠️ فعّل Google في Firebase أولاً');
+    return;
+  }
+
+  try {
+    await window._fbLogin();
+  } catch(e) {
+    btn.disabled = false;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" width="22" height="22"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> دخول بـ Google`;
+    // رسالة خطأ واضحة حسب نوع الخطأ
+    if (e.code === 'auth/popup-blocked') {
+      toast('🚫 المتصفح منع النافذة — جرّب Chrome');
+    } else if (e.code === 'auth/unauthorized-domain') {
+      toast('⚠️ النطاق غير مصرح به في Firebase');
+    } else if (e.code !== 'auth/popup-closed-by-user') {
+      toast('❌ ' + (e.message || 'خطأ في تسجيل الدخول'));
+    }
+  }
+}
+
+// ── دخول تجريبي بدون Google ──
+function enterAsGuest() {
+  const fakeUser = {
+    displayName: 'زائر تجريبي',
+    email: 'guest@mulakhis.app',
+    photoURL: null,
+    isGuest: true
+  };
+  showApp(fakeUser);
+  toast('👤 دخلت كزائر — الميزات الكاملة تحتاج Google Login');
+}
+
+function handleLogout() { window._fbLogout(); }
+
+function showApp(user) {
+  S.user = user;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'flex';
+  const name = user.displayName?.split(' ')[0] || 'زائر';
+  document.getElementById('uname').textContent = name;
+  // صورة المستخدم أو حرف بديل
+  const av = document.getElementById('uavatar');
+  if (user.photoURL) {
+    av.src = user.photoURL;
+    av.style.display = 'block';
+  } else {
+    av.style.display = 'none';
+  }
+  document.getElementById('profileName').textContent = user.displayName || 'زائر تجريبي';
+  document.getElementById('profileEmail').textContent = user.email || '';
+  const pp = document.getElementById('profilePic');
+  pp.src = user.photoURL || '';
+  if (!user.photoURL) pp.style.display = 'none';
+  // إشارة وضع الزائر
+  if (user.isGuest) {
+    document.getElementById('uname').textContent = '👤 زائر';
+  }
+}
+
+function showLogin() {
+  S.user = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('mainApp').style.display = 'none';
+}
+
+/* ════ تنقل الصفحات ════ */
+function goPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  el.classList.add('active');
+  if (id === 'saved') renderSaved();
+}
+
+/* ════ أساليب أدبية ════ */
+const litInfo = {
+  mutanabbi: '<strong>أسلوب المتنبي:</strong> فصاحة عالية، اعتزاز، جزالة في الألفاظ. للنصوص الرسمية والأدبية.',
+  jahiz:     '<strong>أسلوب الجاحظ:</strong> خفة ظريفة مع حكمة، يمزج الجدية بالطرافة.',
+  simple:    '<strong>أسلوب مبسّط:</strong> كلمات سهلة، جمل قصيرة. مناسب للأطفال.'
+};
+
+function onStyle() {
+  const v = document.getElementById('styleOpt').value;
+  const b = document.getElementById('litInfo');
+  if (litInfo[v]) { b.innerHTML = litInfo[v]; b.classList.add('show'); }
+  else b.classList.remove('show');
+}
+
+function onInput() {
+  const l = document.getElementById('inputTa').value.length;
+  document.getElementById('inCount').textContent = ar(l) + ' حرف';
+}
+
+function clearIn() {
+  document.getElementById('inputTa').value = '';
+  onInput();
+}
+
+/* ════ بناء الـ Prompt ════ */
+function buildPrompt(text) {
+  const style = document.getElementById('styleOpt').value;
+  const len   = document.getElementById('lenOpt').value;
+  const dial  = document.getElementById('dialectOpt').value;
+
+  const L = { short:'ملخصاً قصيراً في ٣-٤ جمل', medium:'ملخصاً في فقرة واحدة متماسكة', long:'ملخصاً مفصّلاً في ٢-٣ فقرات' };
+  const D = { formal:'باللغة العربية الفصحى', easy:'بلغة عربية سهلة وواضحة', academic:'بأسلوب أكاديمي رصين' };
+
+  const P = {
+    standard:  `لخّص النص التالي ${L[len]} ${D[dial]}. كن دقيقاً وواضحاً.`,
+    mutanabbi: `أنت أديب يكتب بأسلوب المتنبي — الفصاحة والجزالة والاعتزاز. لخّص النص التالي ${L[len]} بأسلوب رفيع يليق بكبار الكتّاب.`,
+    jahiz:     `أنت أديب يكتب بأسلوب الجاحظ — ظريف، متفنّن، يمزج الحكمة بالطرافة. لخّص النص التالي ${L[len]} بأسلوبه الرشيق.`,
+    bullets:   `لخّص النص التالي على شكل ٥-٧ نقاط رئيسية ${D[dial]}. ابدأ كل نقطة بـ ◈ ثم مسافة.`,
+    simple:    `لخّص النص التالي ${L[len]} بأسلوب مبسّط مناسب للأطفال. استخدم كلمات سهلة وجمل قصيرة.`
+  };
+
+  return `${P[style]}\n\nالنص:\n"""\n${text}\n"""\n\nالملخص:`;
+}
+
+/* ════ استدعاء Claude API ════ */
+async function callClaude(prompt) {
+  const res = await fetch(CLAUDE.url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': CLAUDE.key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: CLAUDE.model,
+      max_tokens: 900,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    throw new Error(e.error?.message || 'خطأ في الاتصال بالذكاء الاصطناعي');
+  }
+  const data = await res.json();
+  return data.content?.[0]?.text || '';
+}
+
+/* ════ التلخيص ════ */
+async function doSummarize() {
+  const text   = document.getElementById('inputTa').value.trim();
+  const errBox = document.getElementById('errBox');
+  errBox.classList.remove('on');
+
+  if (!text)          return errBox.textContent='⚠ أدخل نصاً أولاً.', errBox.classList.add('on');
+  if (text.length<40) return errBox.textContent='⚠ النص قصير جداً — ٤٠ حرفاً على الأقل.', errBox.classList.add('on');
+
+  const btn = document.getElementById('mainBtn');
+  btn.disabled = true; btn.textContent = '⏳  جاري التلخيص…';
+
+  const prog      = document.getElementById('prog');
+  const outIdle   = document.getElementById('outIdle');
+  const outTxt    = document.getElementById('outTxt');
+  const outFooter = document.getElementById('outFooter');
+  const statsBar  = document.getElementById('statsBar');
+  const actStrip  = document.getElementById('actStrip');
+
+  outIdle.style.display = 'none';
+  outTxt.style.display = 'none';
+  outFooter.style.display = 'none';
+  statsBar.classList.add('hide');
+  actStrip.classList.remove('show');
+  prog.classList.add('on');
+
+  const t0 = Date.now();
+  try {
+    const result  = await callClaude(buildPrompt(text));
+    const elapsed = ((Date.now() - t0) / 1000).toFixed(1);
+
+    S.result = result;
+    S.input  = text;
+    S.mode   = document.getElementById('styleOpt').value;
+
+    outTxt.textContent      = result;
+    outTxt.style.display    = 'block';
+    outFooter.style.display = 'flex';
+
+    const wc = result.trim().split(/\s+/).length;
+    document.getElementById('outCount').textContent = ar(wc) + ' كلمة';
+
+    const ratio = Math.round((1 - result.length / text.length) * 100);
+    document.getElementById('s1').textContent = ar(text.length);
+    document.getElementById('s2').textContent = ar(result.length);
+    document.getElementById('s3').textContent = ar(Math.max(0, ratio)) + '%';
+    document.getElementById('s4').textContent = elapsed + 'ث';
+    statsBar.classList.remove('hide');
+    actStrip.classList.add('show');
+
+    if (document.getElementById('saveOpt').value === 'yes') doSave(true);
+
+  } catch(e) {
+    errBox.textContent = '⚠ ' + e.message;
+    errBox.classList.add('on');
+    outIdle.style.display = 'flex';
+  } finally {
+    prog.classList.remove('on');
+    btn.disabled = false;
+    btn.textContent = '✦   لخّص مجدداً';
+  }
+}
+
+/* ════ المحفوظات ════ */
+const ML = { standard:'عادي', mutanabbi:'المتنبي', jahiz:'الجاحظ', bullets:'نقاط', simple:'مبسط' };
+
+function doSave(auto=false) {
+  if (!S.result) { if(!auto) toast('لا يوجد ملخص للحفظ'); return; }
+  const saves = load();
+  saves.unshift({
+    id: Date.now(), text: S.result, orig: S.input,
+    mode: ML[S.mode] || S.mode,
+    date: new Date().toLocaleDateString('ar-MA')
+  });
+  if (saves.length > 60) saves.pop();
+  localStorage.setItem('mulakhis_v4', JSON.stringify(saves));
+  if (!auto) toast('✅ تم الحفظ');
+}
+
+function load() { try { return JSON.parse(localStorage.getItem('mulakhis_v4') || '[]'); } catch { return []; } }
+
+function clearAll() {
+  if (!confirm('حذف جميع المحفوظات؟')) return;
+  localStorage.removeItem('mulakhis_v4');
+  toast('🗑️ تم الحذف');
+  renderSaved();
+}
+
+function delSave(id) {
+  localStorage.setItem('mulakhis_v4', JSON.stringify(load().filter(s => s.id !== id)));
+  renderSaved();
+}
+
+function renderSaved() {
+  const saves = load();
+  document.getElementById('svCount').textContent = ar(saves.length) + ' ملخص';
+  const el = document.getElementById('svList');
+  if (!saves.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">💾</div><p>لا توجد ملخصات بعد<br>ابدأ بتلخيص نص وسيظهر هنا</p></div>';
+    return;
+  }
+  el.innerHTML = saves.map(s => `
+    <div class="sv-card">
+      <div class="sv-head">
+        <span class="sv-mode">${s.mode}</span>
+        <span class="sv-date">${s.date}</span>
+      </div>
+      <div class="sv-txt">${s.text}</div>
+      <div class="sv-acts">
+        <button class="act" onclick="cp('${encodeURIComponent(s.text)}')">⧉ نسخ</button>
+        <button class="act" style="color:var(--red)" onclick="delSave(${s.id})">✕ حذف</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ════ مساعدات ════ */
+function ar(n) { return String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]); }
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function copyOut() {
+  if (S.result) navigator.clipboard.writeText(S.result).then(() => toast('✅ تم النسخ'));
+}
+
+function cp(enc) {
+  navigator.clipboard.writeText(decodeURIComponent(enc)).then(() => toast('✅ تم النسخ'));
+}
+
+function doShare() {
+  if (!S.result) return;
+  if (navigator.share) navigator.share({ title: 'ملخص من مُلخِّص', text: S.result });
+  else { copyOut(); toast('🔗 تم النسخ للمشاركة'); }
+}
+</script>
+</body>
+</html>
