@@ -940,19 +940,19 @@ function buildPrompt(text) {
 
 /* ════ استدعاء Claude API ════ */
 async function callClaude(prompt) {
-  const res = await fetch(CLAUDE.url, {
+  const res = await fetch('/.netlify/functions/summarize'
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': CLAUDE.key,
+      
       'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
+      
     },
     body: JSON.stringify({
       model: CLAUDE.model,
       max_tokens: 900,
       messages: [{ role: 'user', content: prompt }]
-    })
+   
   });
   if (!res.ok) {
     const e = await res.json().catch(() => ({}));
