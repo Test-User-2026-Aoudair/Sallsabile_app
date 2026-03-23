@@ -801,7 +801,7 @@ const CLAUDE = {
   // احصل على مفتاحك من: console.anthropic.com
   key:   window.MY_KEY || 'empty',
   model: 'claude-sonnet-4-20250514',
-  url:   '/.netlify/functions/summarize'
+  url:   '/functions/summarize'
 };
 
 /* ════ الحالة ════ */
@@ -940,7 +940,7 @@ function buildPrompt(text) {
 
 /* ════ استدعاء Claude API ════ */
 async function callClaude(prompt) {
-  const res = await fetch('/.netlify/functions/summarize'
+  const res = await fetch('/functions/summarize'
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
