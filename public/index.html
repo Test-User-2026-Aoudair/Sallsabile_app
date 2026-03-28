@@ -36,8 +36,9 @@
     measurementId:     "G-9C9N0X0PG6"
   };
 
-  const app = initializeApp(firebaseConfig);
-  window._fbTimeout = setTimeout(() => { if(document.getElementById("loginScreen").style.display !== "none") enterAsGuest(); }, 3000);
+  try {
+    const app = initializeApp(firebaseConfig);
+  window._fbTimeout = setTimeout(() => { if(document.getElementById("loginScreen").style.display !== "none") window.enterAsGuest(); }, 3000);
   
   const auth = getAuth(app);
   const gp   = new GoogleAuthProvider();
@@ -50,7 +51,11 @@
   });
 
   window._fbLogin  = () => signInWithPopup(auth, gp);
-  window._fbLogout = () => signOut(auth);
+    window._fbLogout = () => signOut(auth);
+  } catch(e) {
+    console.error('Firebase error:', e);
+    setTimeout(() => window.enterAsGuest && window.enterAsGuest(), 500);
+  }
 </script>
 
 <style>
