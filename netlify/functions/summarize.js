@@ -1,10 +1,10 @@
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
+exports.handler = async function(event, context) {
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) };
   }
 
   try {
-    const { prompt } = JSON.parse(req.body);
+    const { prompt } = JSON.parse(event.body);
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -22,9 +22,9 @@ export default async function handler(req, res) {
     const data = await response.json();
     const text = data.choices?.[0]?.message?.content || '';
 
-    return res.status(200).json({ content: [{ text }] });
+    return { statusCode: 200, body: JSON.stringify({ content: [{ text }] }) };
 
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
-}
+};

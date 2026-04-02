@@ -1,0 +1,1 @@
+{"functions":[{"bundler":"zisi","buildData":{"runtimeAPIVersion":1},"mainFile":"/data/data/com.termux/files/home/mulakhis/netlify/functions/summarize.js","name":"summarize","priority":10,"path":"/data/data/com.termux/files/home/mulakhis/.netlify/functions/summarize.zip","runtime":"js"}],"system":{"arch":"arm","platform":"android"},"timestamp":1775143508357,"version":1}
