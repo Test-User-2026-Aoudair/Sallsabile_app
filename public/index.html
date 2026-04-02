@@ -1,8 +1,4 @@
-<!-- ========================================
-  ضع مفتاح Claude هنا في السطر التالي فقط:
-  احذف الكلمات العربية وضع مفتاحك بدلها
-  مثال: var MY_KEY = 'sk-ant-api03-XXXXX';
-======================================== -->
+
 <script>
   var MY_KEY = 'ضع_مفتاحك_هنا';
 </script>
@@ -22,9 +18,7 @@
 </script>
 
 <style>
-/* ══════════════════════════════════════════
-   DESIGN SYSTEM — أسود وذهبي
-══════════════════════════════════════════ */
+
 :root {
   --gold:        #C9A84C;
   --gold-lt:     #E8C97A;
@@ -47,7 +41,6 @@
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg); color:var(--text); overflow:hidden; }
 
-/* ── خلفية ── */
 .bg-layer {
   position:fixed; inset:0; z-index:0; pointer-events:none;
   background:
@@ -68,9 +61,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 }
 .bg-calli svg { width:115%; height:115%; opacity:.09; }
 
-/* ══════════════════════════════════════════
-   شاشة تسجيل الدخول
-══════════════════════════════════════════ */
 #loginScreen {
   position:fixed; inset:0; z-index:500;
   display:flex; align-items:center; justify-content:center;
@@ -84,7 +74,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 }
 @keyframes cardIn { from{opacity:0;transform:translateY(30px) scale(.95)} to{opacity:1;transform:none} }
 
-/* النجمة الزخرفية فوق الكارد */
 .login-ornament {
   font-family:'Amiri',serif; font-size:22px; color:var(--gold-dk);
   letter-spacing:12px; margin-bottom:18px; opacity:.7;
@@ -98,7 +87,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
   position:relative; overflow:hidden;
 }
 
-/* خط ذهبي علوي */
 .login-card::before {
   content:''; position:absolute; top:0; left:10%; right:10%; height:1px;
   background:linear-gradient(90deg,transparent,var(--gold),transparent);
@@ -136,7 +124,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 }
 .login-div span { font-size:11px; color:var(--dim); letter-spacing:1px; white-space:nowrap; }
 
-/* زر Google */
 #loginBtn {
   width:100%; padding:14px 20px;
   display:flex; align-items:center; justify-content:center; gap:12px;
@@ -154,7 +141,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 }
 .login-note b { color:var(--gold-dk); }
 
-/* بطاقات الميزات تحت الكارد */
 .login-features {
   display:grid; grid-template-columns:1fr 1fr 1fr;
   gap:8px; margin-top:14px; width:100%;
@@ -166,9 +152,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 .feat-icon { font-size:20px; margin-bottom:5px; }
 .feat-text { font-size:10px; color:var(--muted); line-height:1.5; }
 
-/* ══════════════════════════════════════════
-   التطبيق الرئيسي
-══════════════════════════════════════════ */
 .app {
   position:relative; z-index:1;
   display:flex; flex-direction:column;
@@ -176,7 +159,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
   max-width:880px; margin:0 auto;
 }
 
-/* ── الشريط العلوي ── */
 .topbar {
   display:flex; align-items:center; justify-content:space-between;
   padding:11px 20px 9px;
@@ -209,7 +191,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 }
 .logout-x:hover { color:var(--red); }
 
-/* ── المحتوى ── */
 .content {
   flex:1; overflow-y:auto; overflow-x:hidden;
   padding:20px 18px calc(var(--tab-h) + 14px);
@@ -218,12 +199,10 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 .content::-webkit-scrollbar { width:3px; }
 .content::-webkit-scrollbar-thumb { background:var(--border-dim); border-radius:2px; }
 
-/* ── الصفحات ── */
 .page { display:none; animation:up .35s ease both; }
 .page.active { display:block; }
 @keyframes up { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
 
-/* ── التاب السفلي ── */
 .tabs {
   position:fixed; bottom:0; left:50%; transform:translateX(-50%);
   width:100%; max-width:880px; height:var(--tab-h);
@@ -247,13 +226,11 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 .tab-l { font-size:10px; font-weight:700; color:var(--dim); transition:color .22s; letter-spacing:.5px; }
 .tab.active .tab-l { color:var(--gold); }
 
-/* ── رأس القسم ── */
 .sec-head { margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid var(--border-dim); }
 .sec-title { font-family:'Amiri',serif; font-size:clamp(22px,4vw,32px); font-weight:700; line-height:1.2; }
 .sec-title em { color:var(--gold); font-style:normal; }
 .sec-sub { font-size:13px; color:var(--muted); margin-top:4px; font-weight:300; }
 
-/* ── خيارات ── */
 .opts { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin-bottom:16px; }
 @media(max-width:580px) { .opts { grid-template-columns:1fr 1fr; } }
 .opt-box { display:flex; flex-direction:column; gap:4px; }
@@ -266,7 +243,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 }
 .opt-sel:focus { border-color:var(--gold); }
 
-/* ── معلومة الأسلوب ── */
 .lit-info {
   display:none; background:rgba(201,168,76,.07); border:1px solid var(--border);
   border-radius:10px; padding:10px 14px; margin-bottom:14px;
@@ -275,7 +251,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 .lit-info.show { display:block; }
 .lit-info strong { color:var(--gold); }
 
-/* ── شبكة المحرر ── */
 .editor-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
 @media(max-width:560px) { .editor-grid { grid-template-columns:1fr; } }
 
@@ -307,7 +282,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 .ghost { background:none; border:none; cursor:pointer; font-family:'Tajawal',sans-serif; font-size:11px; color:var(--dim); transition:color .2s; }
 .ghost:hover { color:var(--red); }
 
-/* ── مؤشر التحميل ── */
 .prog { height:2px; background:var(--border-dim); border-radius:2px; overflow:hidden; display:none; }
 .prog.on { display:block; }
 .prog-bar {
@@ -316,7 +290,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 }
 @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
-/* ── الناتج الفارغ ── */
 .out-idle {
   flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:8px; color:var(--dim); text-align:center; padding:14px;
@@ -324,13 +297,11 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 .out-idle-icon { font-size:36px; opacity:.18; }
 .out-idle-txt { font-size:12px; line-height:1.8; }
 
-/* ── نص الناتج ── */
 .out-txt {
   flex:1; font-family:'Amiri',serif; font-size:17px; line-height:2;
   color:var(--text); direction:rtl; animation:up .4s ease;
 }
 
-/* ── الإحصائيات ── */
 .stats { display:flex; background:var(--surf2); border-radius:10px; overflow:hidden; }
 .stats.hide { display:none; }
 .stat { flex:1; padding:9px 6px; display:flex; flex-direction:column; align-items:center; border-left:1px solid var(--border-dim); }
@@ -338,7 +309,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 .stat-n { font-size:18px; font-weight:900; color:var(--gold-lt); }
 .stat-l { font-size:9px; color:var(--dim); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
 
-/* ── شريط الأفعال ── */
 .acts { display:none; gap:7px; flex-wrap:wrap; margin-top:11px; }
 .acts.show { display:flex; }
 .act {
@@ -348,7 +318,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 }
 .act:hover { border-color:var(--gold); color:var(--gold); }
 
-/* ── خطأ ── */
 .err {
   display:none; background:rgba(214,69,69,.08); border:1px solid rgba(214,69,69,.2);
   border-radius:10px; padding:10px 14px; font-size:13px;
@@ -356,7 +325,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 }
 .err.on { display:block; }
 
-/* ── الزر الرئيسي ── */
 .btn-main {
   width:100%; padding:15px;
   background:linear-gradient(135deg,var(--gold-dk) 0%,var(--gold) 50%,var(--gold-dk) 100%);
@@ -369,9 +337,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 .btn-main:hover { background-position:100% 0; transform:translateY(-2px); box-shadow:0 8px 30px var(--gold-glow); }
 .btn-main:disabled { opacity:.45; cursor:not-allowed; transform:none; }
 
-/* ══════════════════════════════════════════
-   صفحة المحفوظات
-══════════════════════════════════════════ */
 .sv-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
 .sv-badge { padding:4px 12px; background:var(--surf); border:1px solid var(--border-dim); border-radius:18px; font-size:12px; color:var(--muted); }
 .sv-del { padding:6px 12px; background:rgba(214,69,69,.06); border:1px solid rgba(214,69,69,.15); border-radius:9px; font-family:'Tajawal',sans-serif; font-size:12px; color:var(--red); cursor:pointer; transition:background .2s; }
@@ -393,9 +358,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 .empty-icon { font-size:48px; opacity:.18; margin-bottom:12px; }
 .empty p { font-size:13px; line-height:1.9; }
 
-/* ══════════════════════════════════════════
-   إعدادات وخطة التعلم
-══════════════════════════════════════════ */
 .info-box {
   background:var(--gold-dim); border:1px solid var(--border);
   border-radius:14px; padding:16px; margin-bottom:14px;
@@ -404,7 +366,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 .info-box-body { font-size:12px; color:var(--muted); line-height:2.1; }
 .info-box-body b { color:var(--text); }
 
-/* خطة الأسبوع */
 .week-plan { display:flex; flex-direction:column; gap:9px; margin-bottom:16px; }
 .week-card {
   display:flex; align-items:flex-start; gap:14px;
@@ -423,7 +384,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 .week-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:4px; }
 .week-desc { font-size:12px; color:var(--muted); line-height:1.7; }
 
-/* ── توست ── */
 .toast {
   position:fixed; bottom:calc(var(--tab-h) + 14px); left:50%;
   transform:translateX(-50%) translateY(20px);
@@ -441,7 +401,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 </head>
 <body>
 
-<!-- الخلفية -->
 <div class="bg-layer"></div>
 <div class="bg-grid"></div>
 <div class="bg-calli">
@@ -464,9 +423,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
   </svg>
 </div>
 
-<!-- ══════════════════════════════════════════
-     شاشة تسجيل الدخول
-══════════════════════════════════════════ -->
 <div id="loginScreen" style="display:none">
   <div class="login-wrap">
     <div class="login-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
@@ -492,7 +448,7 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
         دخول بـ Google
       </button>
 
-      <!-- زر تجريبي بدون login -->
+      
       <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
         <div style="flex:1;height:1px;background:var(--border-dim)"></div>
         <span style="font-size:11px;color:var(--dim)">أو</span>
@@ -533,9 +489,6 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     التطبيق الرئيسي
-══════════════════════════════════════════ -->
 <div class="app" id="mainApp" style="display:flex">
 
   <div class="topbar">
@@ -552,7 +505,7 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
 
   <div class="content">
 
-    <!-- ═══ صفحة التلخيص ═══ -->
+    
     <div class="page active" id="page-sum">
       <div class="sec-head">
         <div class="sec-title">لخّص <em>بذكاء</em></div>
@@ -599,7 +552,7 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
       <div class="err" id="errBox"></div>
 
       <div class="editor-grid">
-        <!-- مدخل النص -->
+        
         <div class="panel">
           <div class="ph">النص الأصلي</div>
           <textarea class="ta" id="inputTa"
@@ -611,7 +564,7 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
           </div>
         </div>
 
-        <!-- الناتج -->
+        
         <div class="panel">
           <div class="ph">الملخص</div>
           <div class="prog" id="prog"><div class="prog-bar"></div></div>
@@ -644,7 +597,7 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
       <button class="btn-main" id="mainBtn" onclick="doSummarize()">✦ &nbsp; لخّص الآن</button>
     </div>
 
-    <!-- ═══ صفحة المحفوظات ═══ -->
+    
     <div class="page" id="page-saved">
       <div class="sv-top">
         <div>
@@ -659,14 +612,14 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
       <div class="sv-list" id="svList"></div>
     </div>
 
-    <!-- ═══ صفحة التعلم والإعدادات ═══ -->
+    
     <div class="page" id="page-set">
       <div class="sec-head">
         <div class="sec-title">خطة <em>التعلم</em></div>
         <div class="sec-sub">طريقك من مبتدئ إلى موقع احترافي في شهر</div>
       </div>
 
-      <!-- خطة الأسابيع -->
+      
       <div class="week-plan">
         <div class="week-card">
           <div class="week-num week-now">١</div>
@@ -702,7 +655,7 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
         </div>
       </div>
 
-      <!-- حالة الأمان -->
+      
       <div class="info-box">
         <div class="info-box-title">🔒 حالة الأمان الآن</div>
         <div class="info-box-body">
@@ -713,7 +666,7 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
         </div>
       </div>
 
-      <!-- الروابط المهمة -->
+      
       <div class="info-box">
         <div class="info-box-title">🔗 الروابط المهمة</div>
         <div class="info-box-body">
@@ -725,7 +678,7 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
         </div>
       </div>
 
-      <!-- معلومات المستخدم -->
+      
       <div style="background:var(--surf);border:1px solid var(--border-dim);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:14px">
         <img id="profilePic" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--border)" src="" alt="">
         <div>
@@ -739,9 +692,7 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
       </button>
     </div>
 
-  </div><!-- /content -->
-
-  <!-- التابات السفلية -->
+  </div>
   <div class="tabs">
     <div class="tab active" onclick="goPage('sum',this)">
       <div class="tab-i">✦</div><div class="tab-l">تلخيص</div>
@@ -754,27 +705,16 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
     </div>
   </div>
 
-</div><!-- /app -->
-
-<div class="toast" id="toast"></div>
-
-<!-- ══════════════════════════════════════════
-     JavaScript — منطق التطبيق
-══════════════════════════════════════════ -->
+</div>
 <script>
-/* ════════════════════════════════════════
-   ★ إعدادات Claude API ★
-   هذا المفتاح مؤقت للمرحلة التجريبية
-   في المرحلة التالية سيُنقل للـ Backend
-   ════════════════════════════════════════ */
+
 const CLAUDE = {
-  // احصل على مفتاحك من: console.anthropic.com
+  
   key:   window.MY_KEY || 'empty',
   model: 'claude-sonnet-4-20250514',
   url:   '/.netlify/functions/summarize'
 };
 
-/* ════ الحالة ════ */
 const S = {
   result: '', input: '', mode: '',
   user: null
@@ -783,7 +723,6 @@ const S = {
 /* ════ Auth ════ */
 async function handleLogin() { enterAsGuest(); }
 
-// ── دخول تجريبي بدون Google ──
 function enterAsGuest() {
   const fakeUser = {
     displayName: 'زائر تجريبي',
@@ -803,7 +742,7 @@ function showApp(user) {
   document.getElementById('mainApp').style.display = 'flex';
   const name = user.displayName?.split(' ')[0] || 'زائر';
   document.getElementById('uname').textContent = name;
-  // صورة المستخدم أو حرف بديل
+  
   const av = document.getElementById('uavatar');
   if (user.photoURL) {
     av.src = user.photoURL;
@@ -816,7 +755,7 @@ function showApp(user) {
   const pp = document.getElementById('profilePic');
   pp.src = user.photoURL || '';
   if (!user.photoURL) pp.style.display = 'none';
-  // إشارة وضع الزائر
+  
   if (user.isGuest) {
     document.getElementById('uname').textContent = '👤 زائر';
   }
@@ -828,7 +767,6 @@ function showLogin() {
   document.getElementById('mainApp').style.display = 'none';
 }
 
-/* ════ تنقل الصفحات ════ */
 function goPage(id, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -837,7 +775,6 @@ function goPage(id, el) {
   if (id === 'saved') renderSaved();
 }
 
-/* ════ أساليب أدبية ════ */
 const litInfo = {
   mutanabbi: '<strong>أسلوب المتنبي:</strong> فصاحة عالية، اعتزاز، جزالة في الألفاظ. للنصوص الرسمية والأدبية.',
   jahiz:     '<strong>أسلوب الجاحظ:</strong> خفة ظريفة مع حكمة، يمزج الجدية بالطرافة.',
@@ -861,7 +798,6 @@ function clearIn() {
   onInput();
 }
 
-/* ════ بناء الـ Prompt ════ */
 function buildPrompt(text) {
   const style = document.getElementById('styleOpt').value;
   const len   = document.getElementById('lenOpt').value;
@@ -881,7 +817,6 @@ function buildPrompt(text) {
   return `${P[style]}\n\nالنص:\n"""\n${text}\n"""\n\nالملخص:`;
 }
 
-/* ════ استدعاء Claude API ════ */
 async function callClaude(prompt) {
   const res = await fetch('/.netlify/functions/summarize', {
     method: 'POST',
@@ -896,7 +831,6 @@ async function callClaude(prompt) {
   return data.content?.[0]?.text || '';
 }
 
-/* ════ التلخيص ════ */
 async function doSummarize() {
   const text   = document.getElementById('inputTa').value.trim();
   const errBox = document.getElementById('errBox');
@@ -959,7 +893,6 @@ async function doSummarize() {
   }
 }
 
-/* ════ المحفوظات ════ */
 const ML = { standard:'عادي', mutanabbi:'المتنبي', jahiz:'الجاحظ', bullets:'نقاط', simple:'مبسط' };
 
 function doSave(auto=false) {
@@ -1011,7 +944,6 @@ function renderSaved() {
     </div>`).join('');
 }
 
-/* ════ مساعدات ════ */
 function ar(n) { return String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]); }
 
 function toast(msg) {
