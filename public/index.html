@@ -613,86 +613,35 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
     </div>
 
     
-    <div class="page" id="page-set">
-      <div class="sec-head">
-        <div class="sec-title">خطة <em>التعلم</em></div>
-        <div class="sec-sub">طريقك من مبتدئ إلى موقع احترافي في شهر</div>
-      </div>
-
-      
-      <div class="week-plan">
-        <div class="week-card">
-          <div class="week-num week-now">١</div>
-          <div class="week-info">
-            <div class="week-title">الأسبوع الأول — أنت هنا الآن ✦</div>
-            <div class="week-desc">أنشئ حساب Firebase واحصل على Google Login<br>
-            اذهب لـ <b style="color:var(--gold)">firebase.google.com</b> ← New Project ← Authentication ← Google</div>
-          </div>
-        </div>
-        <div class="week-card">
-          <div class="week-num">٢</div>
-          <div class="week-info">
-            <div class="week-title">الأسبوع الثاني — إخفاء المفتاح</div>
-            <div class="week-desc">أنشئ حساب على <b style="color:var(--gold)">console.anthropic.com</b><br>
-            احصل على Claude API Key وضعه في إعدادات Firebase الآمنة</div>
-          </div>
-        </div>
-        <div class="week-card">
-          <div class="week-num">٣</div>
-          <div class="week-info">
-            <div class="week-title">الأسبوع الثالث — النشر للعالم</div>
-            <div class="week-desc">ارفع الملف لـ <b style="color:var(--gold)">github.com</b> ← اربطه بـ <b style="color:var(--gold)">vercel.com</b><br>
-            موقعك يعمل بعنوان حقيقي مثل <i>mulakhis.vercel.app</i></div>
-          </div>
-        </div>
-        <div class="week-card">
-          <div class="week-num">٤</div>
-          <div class="week-info">
-            <div class="week-title">الأسبوع الرابع — المدرسة الرقمية</div>
-            <div class="week-desc">نضيف صفحة الطالب، شرح الدروس، توليد الأسئلة<br>
-            تبدأ تفكر في الاشتراكات المدفوعة 🎯</div>
-          </div>
-        </div>
-      </div>
-
-      
-      <div class="info-box">
-        <div class="info-box-title">🔒 حالة الأمان الآن</div>
-        <div class="info-box-body">
-          ✅ Google Login — جاهز (يحتاج Firebase Config)<br>
-          ⏳ API Key مخفي — ينتظر إعداد Anthropic Console<br>
-          ✅ المحفوظات — تعمل محلياً على جهازك<br>
-          ⏳ النشر — ينتظر GitHub + Vercel
-        </div>
-      </div>
-
-      
-      <div class="info-box">
-        <div class="info-box-title">🔗 الروابط المهمة</div>
-        <div class="info-box-body">
-          <b>Firebase:</b> firebase.google.com<br>
-          <b>Anthropic API:</b> console.anthropic.com<br>
-          <b>GitHub:</b> github.com<br>
-          <b>Vercel:</b> vercel.com<br>
-          <b>كلها مجانية تماماً ✦</b>
-        </div>
-      </div>
-
-      
-      <div style="background:var(--surf);border:1px solid var(--border-dim);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:14px">
-        <img id="profilePic" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--border)" src="" alt="">
-        <div>
-          <div id="profileName" style="font-size:14px;font-weight:700;color:var(--text)"></div>
-          <div id="profileEmail" style="font-size:12px;color:var(--muted);margin-top:3px"></div>
-        </div>
-      </div>
-
-      <button class="btn-main" onclick="handleLogout()" style="background:linear-gradient(135deg,#5a1a1a,var(--red));box-shadow:0 4px 22px rgba(214,69,69,.2)">
-        🚪 &nbsp; تسجيل الخروج
-      </button>
+      <div class="page" id="page-set">
+    <div class="sec-head">
+      <div class="sec-title">تلخيص <em>PDF</em></div>
+      <div class="sec-sub">ارفع ملف PDF وسيلخصه المساعد اللغوي فوراً</div>
     </div>
 
+    <div class="panel" style="min-height:auto;margin-bottom:14px">
+      <div class="ph">اختر ملف PDF</div>
+      <input type="file" id="pdfFile" accept=".pdf"
+        style="padding:10px;background:var(--surf2);border:1px solid var(--border-dim);
+        border-radius:9px;color:var(--text);font-family:'Tajawal',sans-serif;
+        font-size:13px;width:100%;cursor:pointer">
+      <div id="pdfName" style="font-size:12px;color:var(--muted);margin-top:6px;display:none"></div>
+    </div>
+
+    <div id="pdfErr" class="err"></div>
+    <div id="pdfProg" class="prog"><div class="prog-bar"></div></div>
+
+    <div class="panel" id="pdfOut" style="min-height:160px;margin-top:12px">
+      <div class="ph">الملخص</div>
+      <div id="pdfResult" class="out-idle">
+        <div class="out-idle-icon">📄</div>
+        <div class="out-idle-txt">ارفع ملف PDF لتلخيصه</div>
+      </div>
+    </div>
+
+    <button class="btn-main" id="pdfBtn">✦ لخّص الملف</button>
   </div>
+
   <div class="tabs">
     <div class="tab active" onclick="goPage('sum',this)">
       <div class="tab-i">✦</div><div class="tab-l">تلخيص</div>
@@ -701,7 +650,7 @@ html, body { height:100%; font-family:'Tajawal',sans-serif; background:var(--bg)
       <div class="tab-i">💾</div><div class="tab-l">المحفوظات</div>
     </div>
     <div class="tab" onclick="goPage('set',this)">
-      <div class="tab-i">🗺️</div><div class="tab-l">خطة التعلم</div>
+      <div class="tab-i">📄</div><div class="tab-l">تلخيص PDF</div>
     </div>
   </div>
 
@@ -980,6 +929,52 @@ document.addEventListener('DOMContentLoaded', function() {
     else console.error('enterAsGuest not found');
   });
 });
+
+  // ===== تلخيص PDF =====
+  document.getElementById('pdfFile').addEventListener('change', function() {
+    const name = this.files[0]?.name;
+    const nameDiv = document.getElementById('pdfName');
+    if (name) { nameDiv.textContent = '📄 ' + name; nameDiv.style.display = 'block'; }
+  });
+
+  document.getElementById('pdfBtn').addEventListener('click', async function() {
+    const file = document.getElementById('pdfFile').files[0];
+    const err = document.getElementById('pdfErr');
+    const prog = document.getElementById('pdfProg');
+    const result = document.getElementById('pdfResult');
+    err.classList.remove('on');
+
+    if (!file) { err.textContent = 'الرجاء اختيار ملف PDF أولاً'; err.classList.add('on'); return; }
+    if (file.size > 5 * 1024 * 1024) { err.textContent = 'حجم الملف كبير جداً (الحد الأقصى 5MB)'; err.classList.add('on'); return; }
+
+    prog.classList.add('on');
+    this.disabled = true;
+    result.innerHTML = '<div class="out-idle"><div class="out-idle-icon">⏳</div><div class="out-idle-txt">جاري قراءة الملف...</div></div>';
+
+    try {
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const base64 = e.target.result.split(',')[1];
+        const resp = await fetch('/.netlify/functions/summarize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: 'لخّص محتوى هذا الملف باللغة العربية تلخيصاً وافياً ومنظماً:', pdfBase64: base64 })
+        });
+        const data = await resp.json();
+        const text = data.content?.[0]?.text || data.error || 'حدث خطأ';
+        result.innerHTML = '<div class="out-txt">' + text + '</div>';
+        prog.classList.remove('on');
+        document.getElementById('pdfBtn').disabled = false;
+      };
+      reader.readAsDataURL(file);
+    } catch(e) {
+      err.textContent = 'حدث خطأ: ' + e.message;
+      err.classList.add('on');
+      prog.classList.remove('on');
+      this.disabled = false;
+    }
+  });
+  // ===== نهاية تلخيص PDF =====
 </script>
 </body>
 </html>
